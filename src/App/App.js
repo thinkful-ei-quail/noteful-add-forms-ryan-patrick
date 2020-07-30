@@ -1,3 +1,4 @@
+/* eslint-disable react/sort-comp */
 /* eslint-disable class-methods-use-this */
 import React, { Component } from 'react';
 import { Route, Link } from 'react-router-dom';
@@ -8,6 +9,7 @@ import NoteListMain from '../NoteListMain/NoteListMain';
 import NotePageMain from '../NotePageMain/NotePageMain';
 import ApiContext from '../ApiContext';
 import config from '../config';
+import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 
 // form imports:
 import AddFolder from '../AddFolder/AddFolder';
@@ -94,16 +96,18 @@ class App extends Component {
     };
     return (
       <ApiContext.Provider value={value}>
-        <div className="App">
-          <nav className="App__nav">{this.renderNavRoutes()}</nav>
-          <header className="App__header">
-            <h1>
-              <Link to="/">Noteful</Link>{' '}
-              <FontAwesomeIcon icon="check-double" />
-            </h1>
-          </header>
-          <main className="App__main">{this.renderMainRoutes()}</main>
-        </div>
+        <ErrorBoundary>
+          <div className="App">
+            <nav className="App__nav">{this.renderNavRoutes()}</nav>
+            <header className="App__header">
+              <h1>
+                <Link to="/">Noteful</Link>{' '}
+                <FontAwesomeIcon icon="check-double" />
+              </h1>
+            </header>
+            <main className="App__main">{this.renderMainRoutes()}</main>
+          </div>
+        </ErrorBoundary>
       </ApiContext.Provider>
     );
   }

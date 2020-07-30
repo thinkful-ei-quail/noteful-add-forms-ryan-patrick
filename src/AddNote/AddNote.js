@@ -8,6 +8,8 @@ import ApiContext from '../ApiContext';
 import config from '../config';
 import CircleButton from '../CircleButton/CircleButton';
 
+import './AddNote.css';
+
 class AddNote extends Component {
   static contextType = ApiContext;
 
@@ -16,51 +18,50 @@ class AddNote extends Component {
     this.state = {
       name: { value: '', touched: false },
       content: { value: '', touched: false },
-      folder: {value: ''}
+      folder: { value: '' }
     };
   }
 
   updateName = (name) => {
     this.setState({ name: { value: name, touched: true } });
-  }
+  };
 
   updateContent = (content) => {
     this.setState({ content: { value: content, touched: true } });
-  }
+  };
 
   updateFolder = (id) => {
-    this.setState({folder: {value: id}});
-  }
+    this.setState({ folder: { value: id } });
+  };
 
   renderFolderSelection = () => {
     return this.context.folders.map((folder) => {
-      return <option key={folder.id} value={folder.id}>{folder.name}</option>;
+      return (
+        <option key={folder.id} value={folder.id}>
+          {folder.name}
+        </option>
+      );
     });
   };
 
   validateName() {
     const { value, touched } = this.state.name;
-    return (
-      typeof value === 'string' &&
-      value.length > 0 &&
-      touched
-    );
+    return typeof value === 'string' && value.length > 0 && touched;
   }
 
   validateFolder = () => {
     return this.state.folder.value;
-  }
+  };
 
   handleSubmit = (event) => {
     event.preventDefault();
-    const {name, content, folder} = this.state;
-    const newNote = JSON.stringify(
-      { 
-        name: name.value,
-        content: content.value,
-        folderId: folder.value,
-        modified: new Date(Date.now())
-      });
+    const { name, content, folder } = this.state;
+    const newNote = JSON.stringify({
+      name: name.value,
+      content: content.value,
+      folderId: folder.value,
+      modified: new Date(Date.now())
+    });
     const options = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -73,7 +74,7 @@ class AddNote extends Component {
         this.context.addNote(res);
         this.props.history.push('/');
       });
-  }
+  };
 
   renderAlt = () => {
     return (
@@ -95,33 +96,40 @@ class AddNote extends Component {
 
   renderForm = () => {
     return (
-      <form onSubmit={(e) => this.handleSubmit(e)}>
+      <form className="add-note-form" onSubmit={(e) => this.handleSubmit(e)}>
         <h2>Add New Note</h2>
-        <label htmlFor="name">Name:</label>
-        <input
-          type="text"
-          className="add-folder-name-input"
-          name="name"
-          id="name"
-          onChange={(e) => this.updateName(e.target.value)}
-        />
-        <textarea onChange={(e) => this.updateContent(e.target.value)}
-          id="content"
-          aria-label="note content"
-          defaultValue="Note Content"
-        />
-        <label htmlFor="folder">Folder:</label>
-        <select name="folder" onChange={(e) => this.updateFolder(e.target.value)}>
-          <option value= ''>Choose</option>
-          {this.renderFolderSelection()}
-        </select>
-        <button
-          disabled={!this.validateName() || !this.validateFolder()}
-          type="submit"
-          className="submit-new-folder"
-        >
-          Add
-        </button>
+        <div className="add-note-inputs">
+          <label htmlFor="name">Name:</label>
+          <input
+            type="text"
+            className="add-folder-name-input"
+            name="name"
+            id="name"
+            onChange={(e) => this.updateName(e.target.value)}
+          />
+          <textarea
+            onChange={(e) => this.updateContent(e.target.value)}
+            id="content"
+            aria-label="note content"
+            placeholder="New Note"
+            rows="14"
+          />
+          <label htmlFor="folder">Folder:</label>
+          <select
+            name="folder"
+            onChange={(e) => this.updateFolder(e.target.value)}
+          >
+            <option value="">Choose</option>
+            {this.renderFolderSelection()}
+          </select>
+          <button
+            disabled={!this.validateName() || !this.validateFolder()}
+            type="submit"
+            className="submit-new-folder"
+          >
+            Add
+          </button>
+        </div>
       </form>
     );
   };
