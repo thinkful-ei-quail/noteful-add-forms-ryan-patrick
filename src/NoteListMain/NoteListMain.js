@@ -22,15 +22,15 @@ export default class NoteListMain extends React.Component {
     return (
       <section className='NoteListMain'>
         <ul>
-          {notesForFolder.map(note =>
-            <li key={note.id}>
+          {notesForFolder.map(note =>{
+            return <li key={note.id}>
               <Note
                 id={note.id}
                 name={note.name}
                 modified={note.modified}
               />
             </li>
-          )}
+  })}
         </ul>
         <div className='NoteListMain__button-container'>
           <CircleButton

@@ -70,7 +70,7 @@ class AddNote extends Component {
     fetch(`${config.API_ENDPOINT}/notes`, options)
       .then((res) => res.json())
       .then((res) => {
-        console.log(res);
+        res.id = res.id.toString();
         this.context.addNote(res);
         this.props.history.push('/');
       });

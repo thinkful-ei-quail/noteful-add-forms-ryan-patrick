@@ -7,7 +7,7 @@ describe(`Note component`, () => {
   const props = {
     id: 'a',
     name: 'test-class-name',
-    modified: new Date(2018, 12, 15),
+    modified: (new Date(2018, 12, 15)).toString(),
   }
 
   it('renders a .Note by default', () => {
