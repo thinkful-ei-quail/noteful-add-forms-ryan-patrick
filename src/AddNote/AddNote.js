@@ -68,11 +68,17 @@ class AddNote extends Component {
       body: newNote
     };
     fetch(`${config.API_ENDPOINT}/notes`, options)
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) return res.json().then((e) => Promise.reject(e));
+        return res.json();
+      })
       .then((res) => {
         res.id = res.id.toString();
         this.context.addNote(res);
         this.props.history.push('/');
+      })
+      .catch((error) => {
+        console.error({ error });
       });
   };
 
