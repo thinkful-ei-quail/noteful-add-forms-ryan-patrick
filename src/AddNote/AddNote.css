@@ -3,7 +3,8 @@
 }
 
 .add-note-form h2,
-label {
+label,
+p {
   color: #bdbdbd;
 }
 

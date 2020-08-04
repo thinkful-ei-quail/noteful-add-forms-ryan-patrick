@@ -31,7 +31,7 @@ class AddNote extends Component {
   };
 
   updateFolder = (id) => {
-    this.setState({ folder: { value: id } });
+    this.setState({ folder: { value: id, touched: true } });
   };
 
   renderFolderSelection = () => {
@@ -105,7 +105,7 @@ class AddNote extends Component {
       <form className="add-note-form" onSubmit={(e) => this.handleSubmit(e)}>
         <h2>Add New Note</h2>
         <div className="add-note-inputs">
-          <label htmlFor="name">Name:</label>
+          <label htmlFor="name">Name: (required)</label>
           <input
             type="text"
             className="add-folder-name-input"
@@ -113,14 +113,17 @@ class AddNote extends Component {
             id="name"
             onChange={(e) => this.updateName(e.target.value)}
           />
+          {this.state.name.touched && !this.validateName() ? (
+            <p>name is required</p>
+          ) : null}
           <textarea
             onChange={(e) => this.updateContent(e.target.value)}
             id="content"
             aria-label="note content"
-            placeholder="New Note"
+            placeholder="New Note (content optional)"
             rows="14"
           />
-          <label htmlFor="folder">Folder:</label>
+          <label htmlFor="folder">Folder: (required) </label>
           <select
             name="folder"
             onChange={(e) => this.updateFolder(e.target.value)}
@@ -128,6 +131,9 @@ class AddNote extends Component {
             <option value="">Choose</option>
             {this.renderFolderSelection()}
           </select>
+          {this.state.folder.touched && !this.validateFolder() ? (
+            <p>Folder is required</p>
+          ) : null}
           <button
             disabled={!this.validateName() || !this.validateFolder()}
             type="submit"
