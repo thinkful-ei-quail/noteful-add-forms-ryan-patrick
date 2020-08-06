@@ -84,6 +84,7 @@ class AddNote extends Component {
         this.props.history.push('/');
       })
       .catch((error) => {
+        console.log(error);
         this.updateError('Error: Failed to create note');
       });
   };
