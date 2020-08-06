@@ -18,7 +18,8 @@ class AddNote extends Component {
     this.state = {
       name: { value: '', touched: false },
       content: { value: '', touched: false },
-      folder: { value: '' }
+      folder: { value: '' },
+      error: ''
     };
   }
 
@@ -33,6 +34,10 @@ class AddNote extends Component {
   updateFolder = (id) => {
     this.setState({ folder: { value: id, touched: true } });
   };
+
+  updateError = (error) => {
+    this.setState({error: error});
+  }
 
   renderFolderSelection = () => {
     return this.context.folders.map((folder) => {
@@ -75,10 +80,11 @@ class AddNote extends Component {
       .then((res) => {
         res.id = res.id.toString();
         this.context.addNote(res);
+        this.updateError('');
         this.props.history.push('/');
       })
       .catch((error) => {
-        console.error({ error });
+        this.updateError('Error: Failed to create note');
       });
   };
 
@@ -149,6 +155,7 @@ class AddNote extends Component {
   render() {
     return (
       <>
+        {this.state.error ? <div className='error'>{this.state.error}</div> : ''}
         {this.context.folders.length > 0 && this.renderForm()}
         {this.context.folders.length <= 0 && this.renderAlt()}
       </>

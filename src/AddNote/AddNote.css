@@ -16,3 +16,9 @@ p {
 .add-note-inputs > * {
   margin: 10px 0;
 }
+
+.error {
+  color: red;
+  size: 48px;
+  text-align: center;
+}
